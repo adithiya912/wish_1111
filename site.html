@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11:11 — A tiny wish</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ff8eb5;--hot:#ff5d9e;--lav:#c6a7ff;--ink:#fff5fb}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 20% 15%,#44224f 0%,transparent 42%),radial-gradient(ellipse at 85% 80%,#35204c 0%,transparent 45%),#130e20;color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:48px 48px}
+#sparkles{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.spark{position:absolute;color:#ffd6e7;opacity:.55;animation:twinkle 3s infinite alternate}
+@keyframes twinkle{to{opacity:.12;transform:scale(.65)}}
+main{position:relative;z-index:1;min-height:100vh;display:grid;place-items:center;padding:28px 16px}
+.page{display:none;width:min(680px,100%);text-align:center;animation:appear .55s ease}
+.page.active{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{color:#e4b8ff;text-transform:uppercase;letter-spacing:4px;font-size:11px;font-weight:700;margin-bottom:18px}
+h1{font:700 clamp(38px,7vw,64px)/1.08 'Playfair Display',serif;margin:0 0 18px}
+h1 em{color:var(--pink)}
+p{color:#e4d5e7;line-height:1.7;font-size:16px}
+.card{background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.035));border:1px solid rgba(255,190,220,.22);border-radius:28px;padding:clamp(25px,5vw,46px);box-shadow:0 24px 80px #08051088;backdrop-filter:blur(12px)}
+.heart{font-size:52px;filter:drop-shadow(0 0 20px #ff6da9);margin-bottom:16px;display:block}
+.btnrow{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:28px;min-height:58px;position:relative}
+button{font:700 14px 'DM Sans';border:0;border-radius:999px;padding:15px 24px;cursor:pointer;transition:transform .18s,box-shadow .18s;background:#fff0f7;color:#51213f;box-shadow:0 8px 24px #0003;touch-action:manipulation}
+button.primary{background:linear-gradient(120deg,#ff9abc,#ffc1d8);color:#45162f}
+button.secondary{background:#ffffff12;color:#ffe9f3;border:1px solid #ffffff35}
+button:hover{transform:translateY(-2px);box-shadow:0 12px 28px #0005}
+.runaway{position:relative;z-index:3}
+.hint{font-size:12px;color:#bca9c6;margin-top:18px}
+#playArea{height:160px;position:relative;margin:16px auto 0;max-width:440px;border:1px dashed #ffffff30;border-radius:20px;background:#ffffff08;overflow:hidden}
+#clickBtn{position:fixed;left:50%;top:60%;transform:none;white-space:nowrap;z-index:50;display:none;transition:left .22s cubic-bezier(.3,1.6,.5,1),top .22s cubic-bezier(.3,1.6,.5,1),font-size .2s,padding .2s;will-change:left,top}
+#clickBtn.live{display:block}
+.counter{font:700 28px 'Playfair Display';color:#ffb3d0;margin-top:12px}
+.pattern-grid{display:grid;grid-template-columns:repeat(3,64px);gap:14px;justify-content:center;margin:28px auto 18px;touch-action:none}
+.dot{width:64px;height:64px;border-radius:50%;padding:0;background:#ffffff12;border:1px solid #ffffff40;color:#ffe8f2;font-size:18px;box-shadow:none}
+.dot.selected{background:linear-gradient(135deg,#ff8eb5,#bd8cff);color:#2a1530;box-shadow:0 0 22px #ff8eb588}
+#patternStatus{min-height:24px;color:#f5c9dd;font-size:13px}
+.wish-actions{height:90px;position:relative;max-width:440px;margin:24px auto 0}
+.wish-actions button{position:absolute}
+#wishYes{left:8%;top:8px}
+#wishNo{right:8%;top:8px}
+.final{font:italic 600 clamp(30px,6vw,48px)/1.25 'Playfair Display';color:#ffc0d8;margin:22px 0}
+.small{font-size:13px;color:#bbaac7}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:5}
+@media(max-width:480px){.card{border-radius:22px}.pattern-grid{grid-template-columns:repeat(3,58px);gap:11px}.dot{width:58px;height:58px}.btnrow{gap:10px}button{padding:14px 19px}}
+</style>
+</head>
+<body>
+<div id="sparkles"></div><canvas id="confetti"></canvas>
+<main>
+<section class="page active" id="p1"><div class="card">
+<span class="heart">💌</span><div class="eyebrow">a very important announcement</div>
+<h1>Hey you, <em>yes you.</em></h1>
+<p>I have a tiny 11:11 thing to show you.<br>But first, you have to catch the button. Good luck. 😌</p>
+<div class="btnrow" id="firstArea"><button class="primary runaway" id="firstYes">Yes, tell me!</button><button class="secondary" id="firstNo">Nope 🙄</button></div>
+<div class="hint" id="firstHint">The “Yes” button is shy. Try catching it.</div>
+</div></section>
+
+<section class="page" id="p2"><div class="card">
+<span class="heart">🥹</span><div class="eyebrow">question number one</div>
+<h1>Do you think I'm <em>cute?</em></h1>
+<p>Choose wisely. Your answer will be remembered forever.</p>
+<div class="btnrow"><button class="primary" id="obvious">Obviously yes 😌</button><button class="secondary" id="notReally">No / Maybe / Let me think</button></div>
+<p class="hint" id="qHint">There is only one correct answer. Just saying.</p>
+</div></section>
+
+<section class="page" id="p3"><div class="card">
+<span class="heart">👉👈</span><div class="eyebrow">you passed. barely.</div>
+<h1>Okay, now <em>click me.</em></h1>
+<p>Just one click. How hard can it be? (Don't answer that.)</p>
+<div id="playArea"></div>
+<div class="counter"><span id="clickCount">0</span> / 1</div>
+<div class="hint">No giving-up button. I believe in your index finger.</div>
+</div></section>
+
+<section class="page" id="p4"><div class="card">
+<span class="heart">🧩</span><div class="eyebrow">the secret pattern test</div>
+<h1>Unlock the <em>pattern.</em></h1>
+<p>Question: <b>What's the magic number we keep coming back to?</b><br>Enter your answer as a pattern: tap the centre heart <b>four times</b>.</p>
+<div class="pattern-grid" id="patternGrid">
+<button class="dot" data-n="1">1</button><button class="dot" data-n="2">2</button><button class="dot" data-n="3">3</button>
+<button class="dot" data-n="4">4</button><button class="dot" data-n="5">♥</button><button class="dot" data-n="6">6</button>
+<button class="dot" data-n="7">7</button><button class="dot" data-n="8">8</button><button class="dot" data-n="9">9</button>
+</div>
+<div id="patternStatus">Tap the centre heart 4 times to enter the pattern.</div>
+<div class="btnrow"><button class="secondary" id="resetPattern">Reset pattern</button></div>
+</div></section>
+
+<section class="page" id="p5"><div class="card">
+<span class="heart">🕯️</span><div class="eyebrow">11:11 — make a wish</div>
+<h1>Make a <em>wish.</em></h1>
+<p>Do you want to see my 11:11 wish for you?</p>
+<div class="wish-actions" id="wishArea"><button class="primary runaway" id="wishYes">YES, SHOW ME ♥</button><button class="secondary" id="wishNo">NO, KEEP IT SECRET</button></div>
+<div class="hint">Choose with your heart. Or chase the button. Your call.</div>
+</div></section>
+
+<section class="page" id="p6"><div class="card">
+<span class="heart">⏳</span><div class="eyebrow">processing something extremely important</div>
+<h1>Hold on, <em>loading...</em></h1>
+<p id="loadingText">Gathering all the 11:11 magic...</p>
+<div style="height:8px;background:#ffffff20;border-radius:20px;overflow:hidden;margin:28px auto;max-width:360px"><div id="progress" style="height:100%;width:0;background:linear-gradient(90deg,#ff8eb5,#c6a7ff);border-radius:20px;transition:width .3s"></div></div>
+<div class="small">Please do not close this extremely serious scientific process.</div>
+</div></section>
+
+<section class="page" id="p7"><div class="card">
+<span class="heart">🍄💗</span><div class="eyebrow">your 11:11 wish has arrived</div>
+<h1>My wish for <em>you.</em></h1>
+<div class="final">“The mushroom puffs that I ate can be made better.”</div>
+<p>And maybe... next time, I'll get you the better ones. 🤍</p>
+<p class="small">Happy 11:11. You made it through all that nonsense. x</p>
+<button class="primary" onclick="location.reload()">Relive the chaos ↻</button>
+</div></section>
+</main>
+<button class="primary" id="clickBtn">CLICK ME 💗</button>
+<script>
+const $=s=>document.querySelector(s);
+const pages=[...document.querySelectorAll('.page')];
+function go(n){pages.forEach((p,i)=>p.classList.toggle('active',i===n-1));window.scrollTo({top:0,behavior:'smooth'});}
+function funnyBack(msg){go(1);$('#firstHint').textContent=msg;}
+function dodge(btn,area,padding=12){
+ const a=area.getBoundingClientRect(), b=btn.getBoundingClientRect();
+ const maxX=Math.max(0,a.width-b.width-padding), maxY=Math.max(0,a.height-b.height-padding);
+ btn.style.position='absolute';btn.style.left=(padding/2+Math.random()*maxX)+'px';btn.style.top=(padding/2+Math.random()*maxY)+'px';btn.style.transform='none';
+}
+function setupRunaway(btn,area,after){
+ let tries=0;
+ const run=()=>{tries++;btn.dataset.tries=String(tries);if(tries<5)dodge(btn,area);if(tries===3&&after)after();};
+ btn.addEventListener('pointerenter',run);
+ // On phones, let the first few taps move the button, but eventually allow a real tap.
+ btn.addEventListener('touchstart',()=>{if(tries<4)run();},{passive:true});
+ btn.addEventListener('click',()=>{if(tries<4)run();});
+}
+const firstArea=$('#firstArea');
+setupRunaway($('#firstYes'),firstArea);
+$('#firstYes').addEventListener('click',()=>{if(parseInt($('#firstYes').dataset.tries||'0')>=4)go(2);});
+ 
+$('#firstNo').addEventListener('click',()=>funnyBack("Nope? That's not how this story goes. Go on, try again 😂"));
+
+$('#obvious').onclick=()=>go(3);
+$('#notReally').onclick=()=>funnyBack("Wrong answer detected. Even the universe is disappointed. Try again 😭");
+
+let clicks=0, clickBtn=$('#clickBtn'), playArea=$('#playArea');
+let roamTimer=null, lastMove=0, scale=1;
+const isTouch=matchMedia('(pointer:coarse)').matches;
+function roam(){
+ const now=performance.now(); if(now-lastMove<120)return; lastMove=now;
+ const w=innerWidth,h=innerHeight,b=clickBtn.getBoundingClientRect(),m=10;
+ let x,y,t=0;
+ // jump to a spot far from where it is now, anywhere on the screen
+ do{x=m+Math.random()*Math.max(0,w-b.width-2*m);y=m+Math.random()*Math.max(0,h-b.height-2*m);t++;}
+ while(t<12&&Math.hypot(x-b.left,y-b.top)<Math.min(w,h)*.35);
+ clickBtn.style.left=x+'px';clickBtn.style.top=y+'px';
+}
+function startRoaming(){
+ clickBtn.classList.add('live');
+ clickBtn.style.left='50%';clickBtn.style.top='60%';
+ clearInterval(roamTimer);
+ // it also wanders off by itself, faster with every successful click
+ const tick=()=>{roam();roamTimer=setTimeout(tick,1500);};
+ roamTimer=setTimeout(tick,500);
+}
+function stopRoaming(){clickBtn.classList.remove('live');clearTimeout(roamTimer);}
+// flee when the cursor comes near (not just on touch) -> much harder to catch
+document.addEventListener('pointermove',e=>{
+ if(!clickBtn.classList.contains('live')||e.pointerType==='touch')return;
+ const b=clickBtn.getBoundingClientRect(),cx=b.left+b.width/2,cy=b.top+b.height/2;
+ if(Math.hypot(e.clientX-cx,e.clientY-cy)<60&&Math.random()<.6)roam();
+});
+// on touch screens: dodge most taps, but a lucky quick tap can still land
+clickBtn.addEventListener('touchstart',e=>{if(Math.random()<.3){e.preventDefault();roam();}},{passive:false});
+clickBtn.addEventListener('click',()=>{
+ clicks++;$('#clickCount').textContent=clicks;
+ scale=Math.max(.6,1-clicks*.09);
+ clickBtn.style.fontSize=(14*scale)+'px';clickBtn.style.padding=(15*scale)+'px '+(24*scale)+'px';
+ if(clicks>=1){stopRoaming();go(4);}else{lastMove=0;roam();}
+});
+// show the roaming button only while page 3 is active
+new MutationObserver(()=>{const on=$('#p3').classList.contains('active');if(on&&!clickBtn.classList.contains('live'))startRoaming();if(!on)stopRoaming();})
+ .observe($('#p3'),{attributes:true,attributeFilter:['class']});
+
+let pattern=[];
+const required=[5,5,5,5];
+function resetPattern(){pattern=[];document.querySelectorAll('.dot').forEach(d=>d.classList.remove('selected'));$('#patternStatus').textContent='Tap the centre heart 4 times to enter the pattern.';}
+document.querySelectorAll('.dot').forEach(dot=>dot.addEventListener('click',()=>{
+ const n=+dot.dataset.n;pattern.push(n);dot.classList.add('selected');
+ if(n!==5){$('#patternStatus').textContent='Oops. That pattern is not 11:11. Starting over...';setTimeout(()=>funnyBack("Pattern incorrect. Your pattern skills need a little romance 😂"),850);return;}
+ if(pattern.length===4){$('#patternStatus').textContent='Pattern accepted. You are suspiciously good at this. 💗';setTimeout(()=>go(5),650);}
+}));
+$('#resetPattern').onclick=resetPattern;
+
+const wishArea=$('#wishArea'),wishYes=$('#wishYes');
+setupRunaway(wishYes,wishArea);
+wishYes.addEventListener('click',()=>{if(parseInt(wishYes.dataset.tries||'0')>=4)startLoading();});
+wishYes.addEventListener('pointerenter',()=>{wishYes.dataset.tries=String((+wishYes.dataset.tries||0)+1);});
+wishYes.addEventListener('touchstart',()=>{wishYes.dataset.tries=String((+wishYes.dataset.tries||0)+1);});
+$('#wishNo').onclick=()=>funnyBack("SECRET? After all that effort? Back to page one, madam 😂");
+
+function startLoading(){go(6);let v=0;const messages=['Gathering all the 11:11 magic...','Checking the stars...','Making this unnecessarily dramatic...','Almost there, promise...'];const timer=setInterval(()=>{v+=5;$('#progress').style.width=v+'%';$('#loadingText').textContent=messages[Math.min(3,Math.floor(v/26))];if(v>=100){clearInterval(timer);go(7);confetti();}},220);}
+function confetti(){const c=$('#confetti'),ctx=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;let bits=Array.from({length:130},()=>({x:Math.random()*c.width,y:-Math.random()*c.height,v:2+Math.random()*4,s:3+Math.random()*5,a:Math.random()*6.28}));let frames=0;function draw(){ctx.clearRect(0,0,c.width,c.height);bits.forEach(b=>{b.y+=b.v;b.x+=Math.sin(b.a+=.04);ctx.fillStyle=['#ff8eb5','#c6a7ff','#fff0a8'][Math.floor(Math.random()*3)];ctx.fillRect(b.x,b.y,b.s,b.s);});if(++frames<240)requestAnimationFrame(draw);else ctx.clearRect(0,0,c.width,c.height);}draw();}
+for(let i=0;i<45;i++){let s=document.createElement('span');s.className='spark';s.textContent=Math.random()>.5?'✦':'·';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.fontSize=(8+Math.random()*13)+'px';s.style.animationDelay=Math.random()*3+'s';$('#sparkles').appendChild(s);}
+</script>
+</body></html>
